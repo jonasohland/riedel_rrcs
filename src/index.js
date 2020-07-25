@@ -2,7 +2,7 @@
 import xmlrpc from 'homematic-xmlrpc'
 import { parseString } from 'xml2js'
 import hagen from 'hagen'
-const http = require('http').Server()
+const http = require('http').Server();
 
 let server, ping
 let registeredForAllEvents = false
@@ -14,7 +14,7 @@ let registeredForAllEvents = false
  * @param  {obj} cb     object of callback functions
  */
 let RRCS_Server = function (local, remote, cb) {
-  http.listen(local.port)
+  // http.listen(local.port)
 
   server = xmlrpc.createServer({host: local.ip, port: local.port})
   cb.log(`RRCS Server listening on ${local.port}`)
