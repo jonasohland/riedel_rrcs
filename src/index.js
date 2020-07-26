@@ -1,12 +1,5 @@
 'use script'
 import xmlrpc from 'homematic-xmlrpc'
-import { parseString } from 'xml2js'
-import hagen from 'hagen'
-const http = require('http').Server();
-
-let server, ping
-let registeredForAllEvents = false
-
 /**
  * RRCS_Server Events
  * @param  {obj}   local  {ip: str, port: int}
@@ -16,7 +9,7 @@ let registeredForAllEvents = false
 let RRCS_Server = function (local, remote, cb) {
   // http.listen(local.port)
 
-  server = xmlrpc.createServer({host: local.ip, port: local.port})
+  const server = xmlrpc.createServer({host: local.ip, port: local.port})
   cb.log(`RRCS Server listening on ${local.port}`)
 
   let client = xmlrpc.createClient({
@@ -31,7 +24,7 @@ let RRCS_Server = function (local, remote, cb) {
 
   client.methodCall('RegisterForAllEvents',
     ['C0000000001', local.port, "/", true, false], (err, val) => {
-      hagen.log('RRCS_Client', 'RegisterForAllEvents called')
+      cb.log('RegisterForAllEvents called')
       // cb.registerForAllEvents(val, err)
   })
 
@@ -268,14 +261,14 @@ export { RRCS_Server }
  */
 function standardCallback(error, value, method) {
   if (error !== null) {
-    hagen.error('RRCS Error: ', method + " | " + error.faultString)
+    console.error('RRCS Error: ', method + " | " + error.faultString)
     var r = {
       "status": "error",
       "value": error
     }
     return r
   } else {
-    hagen.log('RRCS Response', method)
+    cb.log('RRCS Response', method)
     console.log(value)
     var r = {
       "status": "success",
@@ -296,7 +289,6 @@ function standardCallback(error, value, method) {
 function clientRequest(client, name, params, cb) {
   return new Promise((res, rej) => {
     client.methodCall(name, params, (err, val) => {
-      hagen.log('RRCS_Client', `${name} called`)
       if (err) rej(cb({err: err}))
       else res(cb({val: val}))
     })
