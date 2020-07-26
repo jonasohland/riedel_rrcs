@@ -24,6 +24,7 @@
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.10.5",
     "@babel/polyfill": "^7.10.4",
+    "@babel/runtime": "^7.10.5",
     "hagen": "^1.4.0",
     "homematic-xmlrpc": "^1.0.2",
     "lodash": "^4.17.19",
