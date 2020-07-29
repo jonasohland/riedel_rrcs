@@ -246,6 +246,10 @@ let RRCS_Server = function (local, remote, cb) {
     cb.gatewayShutdown(`gatewayShutdown`, params);
     callback(null, params[0])
   })
+
+  return {
+    server, client
+  }
 }
 
 export { RRCS_Server }
